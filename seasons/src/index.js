@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import SeasonDisplay from './SeasonDisplay';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
+    //Same as this.state = {lat: null}; in constructor
+    state = {late: null};
 
-        this.state = {
-            lat: 100
-        };
+    componentDidMount() {
+        this.setState({lat: -37.77});
     }
 
     render() {
-    return <div>Latitude: {this.state.lat}</div>
+    return <SeasonDisplay lat={this.state.lat}/>
     }
 }
 
