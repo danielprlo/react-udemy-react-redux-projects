@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Search = () => {
-  //In a real life case, this wont be like this
-  //better start state with empty string
-  //and add a condition before calling search()
-  //checking that term is not empty
   const [term, setTerm] = useState('programming'); 
   const [results, setResults] = useState([]);
   console.log(results);
@@ -23,8 +19,37 @@ const Search = () => {
       setResults(data.query.search);
     };
 
-    search();
-  }, [term])
+    setTimeout(() => {
+      if (term) {
+        search();
+      }
+    }, 500);
+    
+    
+  }, [term]);
+
+  const renderedResults = results.map((result) => {
+    return (
+      <div key={result.pageid} className="item">
+        <div className="right floated content">
+          <a 
+            className="ui button"
+            href={`https://en.wikipedia.org?cuid=${result.pageid}`}
+          >
+            Go
+          </a>
+        </div>
+        <div className="content">
+          <div className="header">
+            {result.title}
+          </div>
+          <span dangerouslySetInnerHTML={{__html: result.snippet}}></span>
+        </div>
+      </div>
+    )
+  });
+
+
 
   return (
     <div>
@@ -37,6 +62,9 @@ const Search = () => {
             className="input" 
           />
         </div>
+      </div>
+      <div className="ui celled list">
+        {renderedResults}
       </div>
     </div>
   )
