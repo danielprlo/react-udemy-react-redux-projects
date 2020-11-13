@@ -4,8 +4,8 @@ import axios from 'axios';
 const Search = () => {
   const [term, setTerm] = useState('programming'); 
   const [results, setResults] = useState([]);
-  console.log(results);
-  useEffect(() => {
+
+  useEffect(() => { 
     const search = async () => {
       const {data} = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
@@ -19,12 +19,22 @@ const Search = () => {
       setResults(data.query.search);
     };
 
-    setTimeout(() => {
-      if (term) {
-        search();
-      }
-    }, 500);
-    
+    if (term && !results.lenght) {
+      search();
+    } else {
+      const timeoutId = setTimeout(() => {
+        if (term) {
+          search();
+        }
+      }, 500);
+  
+      //First render time returns the function
+      //Second render time the function gets invoqued first
+      //Then the rest of the useEffect code 
+      return () => {
+        clearTimeout(timeoutId);
+      };  
+    }
     
   }, [term]);
 
